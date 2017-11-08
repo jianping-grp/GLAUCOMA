@@ -1,0 +1,47 @@
+<div class="row">
+    {% if compounds %}
+        <h3 class="text-info" id="compound-result-header">Related compounds</h3>
+        <table class="table table-responsive table-bordered" id="compound-table">
+            <thead>
+            <tr>
+                <th class="text-center">yatcm ID</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Related Herbs</th>
+            </tr>
+            </thead>
+            <tbody class="text-center">
+            {% for compound in compounds %}
+                <tr>
+                    <td class="text-center">YaTCM ID: {{ compound.pk }}</td>
+                    <td>
+                        <a href="{{ compound.get_absolute_url }}">{{ compound.english_name }}</a>
+                    </td>
+                    <td>
+                        <a href="{% url "compound_related_herbs" compound.pk %}">
+                            {{ compound.herb_set.count }} records
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+{#    {% else %}#}
+{#        <h3 class="text-info">No compounds fit.</h3>#}
+    {% endif %}
+
+{#    <div class="pagination">#}
+{#        <span class="step-links">#}
+{#            {% if paginator.has_previous %}#}
+{#                <a href="?page={{ paginator.previous_page_number }}">previous</a>#}
+{#            {% endif %}#}
+{##}
+{#            <span class="current">#}
+{#                Page {{ paginator.number }} of {{ paginator.num_pages }}#}
+{#            </span>#}
+{##}
+{#            {% if paginator.has_next %}#}
+{#                <a href="?page={{ paginator.next_page_number }}">next</a>#}
+{#            {% endif %}#}
+{#        </span>#}
+{#    </div>#}
+</div>

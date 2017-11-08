@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static staticfiles i18n %}
+{% block css %}
+{#    <link href="{% static "js/jtable.2.4.0/themes/metro/blue/jtable.min.css" %}" rel="stylesheet" type="text/css">#}
+{#    <link href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">#}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <!-- search area -->
+            <div class="col-md-4" id="search-bar">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs">
+                    <li role="presentation" id="structure-search"><a href="#drawer" data-toggle="tab">Structure search</a></li>
+                    <li role="presentation" id="name-search"><a href="#identify" data-toggle="tab">Identify Search</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="drawer">
+                        <div id="jsme"></div>
+                        <form id="structure-form" action="post" style="margin-top: 30px;" role="form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="tanimoto">tanimoto:</label>
+                                <input type="range" id="tanimoto" min="0.5" max="1.0" step="0.1" name="tanimoto" class="form-control" value="0.8">
+                                <p class="help-block">tanimoto range: 0.5-1.0</p>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="is_sub" id="is_sub"> Substructure Search
+                                </label>
+                            </div>
+
+                            <input type="hidden" id="smiles" value="" name="smiles">
+
+                        </form>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="identify">
+                        <form id="identify_form" style="margin-top: 30px;" role="form">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <select id="identifySelector" name="type">
+                                    <option value="all">All</option>
+                                    <option value="compound">Compound</option>
+                                    <option value="cid">CID</option>
+                                    <option value="cas">CAS</option>
+                                    <option value="formula">Formula</option>
+                                    <option value="target">Target</option>
+                                    <!--<option value="herb">Herb</option>-->
+                                    <!--<option value="prescription">Prescription</option>-->
+                                </select>
+                                <input type="search" name="query">
+                            </div>
+                        </form>
+                    </div>
+
+                    <button class="btn btn-block btn-default" id="query_btn" onclick="search()">Search</button>
+                </div>
+            </div>
+
+            <!-- result area -->
+            <div class="col-md-8" id="search-result">
+                <div class="col-md-12" id="compound-div"></div>
+                <div class="col-md-12" id="herb-div"></div>
+                <div class="col-md-12" id="prescription-div"></div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script src="{% static 'js/jsme/jsme.nocache.js' %}"></script>
+{#    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>#}
+{#    <script src="{% static 'js/jquery_ui/jquery-ui.min.js' %}"></script>#}
+{#    <script src="{% static 'js/jtable.2.4.0/jquery.jtable.min.js' %}"></script>#}
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}
