@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django_rdkit.models import *
 from django_rdkit.models.fields import *
 from rdkit import Chem
+from django_rdkit.config import config
 from rdkit.Chem import Descriptors
 from rdkit.Chem.Crippen import MolLogP
 from rdkit.Chem.Lipinski import NumHAcceptors, NumHDonors, NumRotatableBonds
@@ -13,7 +14,7 @@ class CompoundManager(models.Manager):
     def structure_search(self, smiles, similarity):
         search_mfp2 = MORGANBV_FP(Value(smiles))
         config.tanimoto_threshold = similarity
-        queryset = super(CompoundManager, self).get_queryset().filter(mfp2__tanimoto=search_mfp2)
+        queryset = super(CompoundManager, self).get_queryset().filter(bfp__tanimoto=search_mfp2)
         queryset = queryset.annotate(similarity=TANIMOTO_SML('bfp', search_mfp2))
         queryset = queryset.order_by('-similarity')
         return queryset

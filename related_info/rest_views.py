@@ -20,7 +20,7 @@ class CompoundViewSet(viewsets.DynamicModelViewSet):
         substructure_search = int(request.POST['substructure_search'])
         # perform substructure
         print smiles, similarity, substructure_search
-
+        result = {}
         if substructure_search == 1:
             result = models.Compound.objects.filter(mol__hassubstruct=QMOL(Value(smiles))).all()
         # structure search
@@ -29,12 +29,13 @@ class CompoundViewSet(viewsets.DynamicModelViewSet):
                 result = models.Compound.objects.structure_search(smiles, similarity)
             except:
                 print 'structure search error'
-        page = self.paginate_queryset(result)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(result, many=True)
-        return Response(serializer.data)
+        if result:
+            page = self.paginate_queryset(result)
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            serializer = self.get_serializer(result, many=True)
+            return Response(serializer.data)
 
         return Response(result)
 
