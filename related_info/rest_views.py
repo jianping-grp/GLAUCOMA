@@ -15,9 +15,9 @@ class CompoundViewSet(viewsets.DynamicModelViewSet):
     #@detail_route(methods=['POST', 'GET'])
     @list_route(methods=['POST', 'GET'], permission_classes=[permissions.AllowAny])
     def search(self, request):
-        smiles = str(request.POST['smiles'])
-        similarity = float(request.POST['similarity'])
-        substructure_search = int(request.POST['substructure_search'])
+        smiles = str(request.data['smiles'])
+        similarity = float(request.data['similarity'])
+        substructure_search = int(request.data['substructure_search'])
         # perform substructure
         print smiles, similarity, substructure_search
         result = {}
