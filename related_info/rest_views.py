@@ -6,13 +6,22 @@ from . import models, serializers
 from dynamic_rest import viewsets
 from rest_framework.response import Response
 from django_rdkit.models import *
+import sea
+
+TARGET_LIST = ['CHEMBL2034',
+               'CHEMBL4267',
+               'CHEMBL2717',
+               'CHEMBL1987',
+               'CHEMBL5932',
+               'CHEMBL286',
+               'CHEMBL3119']
 
 
 class CompoundViewSet(viewsets.DynamicModelViewSet):
     queryset = models.Compound.objects.all()
     serializer_class = serializers.CompoundSerializer
 
-    #@detail_route(methods=['POST', 'GET'])
+    # @detail_route(methods=['POST', 'GET'])
     @list_route(methods=['POST', 'GET'], permission_classes=[permissions.AllowAny])
     def search(self, request):
         smiles = str(request.data['smiles'])
@@ -54,18 +63,36 @@ class UniprotInfoViewSet(viewsets.DynamicModelViewSet):
     queryset = models.UniprotInfo.objects.all()
     serializer_class = serializers.UniprotInfoSerializer
 
+
 class KeggProteinViewSet(viewsets.DynamicModelViewSet):
     queryset = models.KeggProtein.objects.all()
     serializer_class = serializers.KeggProteinSerializer
+
 
 class UniprotDBCompoundViewSet(viewsets.DynamicModelViewSet):
     queryset = models.UniprotDBCompound.objects.all()
     serializer_class = serializers.UniprotDBCompoundSerializer
 
+
 class UniprotAllPathway(viewsets.DynamicModelViewSet):
     queryset = models.UniprotAllPathway.objects.all()
     serializer_class = serializers.UniprotAllPathway
 
+
+@api_view(['POST'])
+@permission_classes([permissions.AllowAny])
+def target_pred(request):
+    smiles = str(request.data['smiles'])
+    #print smiles
+    #smiles = 'CC1CCCN(C1C)C(=O)c2csc(Nc3ccc(C)cc3)n2'
+
+    # target_list = [x['uniprot_chembl_id']
+    #                for x in
+    #                models.UniprotInfo.objects.filter(uniprot_chembl_id__startswith='CHEMBL').values('uniprot_chembl_id')
+    #                ]
+    pred_data = sea.pred2(smiles, TARGET_LIST)
+    print pred_data
+    return Response(pred_data)
 
 # @api_view(['POST'])
 # @permission_classes([permissions.AllowAny])

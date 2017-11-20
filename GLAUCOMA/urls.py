@@ -24,7 +24,7 @@ from related_info import urls as related_info_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^graphql', csrf_exempt(GraphQLView.as_view(graphiql=True)), name='graphql'),
-    url(r'^api/', include(related_info_urls.rest_routers.urls)),
+    url(r'^api/', include(related_info_urls.urlpatterns)),
 ]
 
 ''' urlpatterns = [
