@@ -9,14 +9,14 @@ from GLAUCOMA import settings
 TARGET_FOLDER_BASE = os.path.join(settings.BASE_DIR, 'target-pkl')
 
 FP_PARAM = {
-    'topological-hashed': {
+    'topological_hashed': {
         "mean": 0.000026936641120031898,
         "sd": 0.00398734520007183,
         "sd_exp": 0.5145149536573593,
         "tc": 0.66,
         "fp_func": lambda m: AllChem.GetHashedTopologicalTorsionFingerprint(m)
     },
-    'atompair-hashed': {
+    'atompair_hashed': {
         "mean": 0.00002541280101763038,
         "sd": 0.003864080986890242,
         "sd_exp": 0.5118760617288712,
@@ -30,7 +30,7 @@ FP_PARAM = {
         "tc": 0.88,
         "fp_func": lambda m: AllChem.GetMACCSKeysFingerprint(m)
     },
-    'morgan-hashed': {
+    'morgan_hashed': {
         "mean": 0.00002318732496154415,
         "sd": 0.003829515743309366,
         "sd_exp": 0.5101931872278405,
@@ -64,7 +64,7 @@ def p_value(z):
         return 1 - math.exp(x)
 
 def pred2(smiles, target_list):
-    result = dict()
+    result = list()
     try:
         mol = Chem.MolFromSmiles(smiles)
     except:
@@ -89,11 +89,11 @@ def pred2(smiles, target_list):
             if rs:
                 zscore = z_score(rs, len(target_mol_pkl), fp_param['mean'], fp_param['sd'], fp_param['sd_exp'])
                 pvalue = p_value(zscore)
-                target_result[fp_name] = {
-                    'p-value': pvalue
-                }
+                target_result[fp_name] = pvalue
+
         if target_result:
-            result[chembl_id] = target_result
+            target_result['chembl_id'] = chembl_id
+            result.append(target_result)
     return result
 
 def pred(smiles, target_list):
