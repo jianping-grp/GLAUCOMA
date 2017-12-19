@@ -38,10 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'dynamic_rest',
     'django_filters',
     'related_info',
-    'graphene_django',
+    #'graphene_django',
     'django_rdkit',
     'corsheaders',
     'django_extensions'
@@ -52,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -138,16 +139,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 
-GRAPHENE = {
-    'SCHEMA': 'GLAUCOMA.schema.schema',
-    'MIDDLEWARE': (
-        'graphene_django.debug.DjangoDebugMiddleware',
-    )
-}
+# GRAPHENE = {
+#     'SCHEMA': 'GLAUCOMA.schema.schema',
+#     'MIDDLEWARE': (
+#         'graphene_django.debug.DjangoDebugMiddleware',
+#     )
+# }
 
 # DRF
 REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
@@ -161,5 +166,5 @@ DYNAMIC_REST = {
     'DEBUG': True,
     'PAGE_QUERY_PARAM': 'page'
 }
-
+CSRF_COOKIE_SECURE = False
 SHELL_PLUS_PRINT_SQL = True

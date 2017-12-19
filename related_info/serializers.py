@@ -1,6 +1,6 @@
 from . import models
 from dynamic_rest import serializers
-
+from rest_framework.permissions import AllowAny
 
 class CompoundSerializer(serializers.DynamicModelSerializer):
     uniprotinfo_set = serializers.DynamicRelationField('UniprotInfoSerializer', many=True, deferred=True, embed=True)
@@ -50,4 +50,9 @@ class UniprotAllPathway(serializers.DynamicModelSerializer):
     class Meta:
         model = models.UniprotAllPathway
         exclude = []
-        
+
+
+class FeedbackSerializer(serializers.DynamicModelSerializer):
+    class Meta:
+        model = models.Feedback
+        exclude = []

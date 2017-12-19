@@ -87,7 +87,7 @@ class CompoundNode(DjangoObjectType):
     class Meta:
         model = Compound
         interfaces = (relay.Node, )
-        exclude_fields = ['mol']
+        exclude_fields = ['mol', 'bfp']
         filter_fields = {
             'generic_name': ['exact', 'icontains', 'istartswith']
         }

@@ -180,7 +180,13 @@ class UniprotAllPathway(models.Model):
         super(UniprotAllPathway, self).save()
 
 
-
+class Feedback(models.Model):
+    username = models.CharField(max_length=256)
+    email = models.EmailField()
+    phone = models.CharField(blank=True, null=True, max_length=64)
+    message = models.TextField()
+    ip = models.GenericIPAddressField(blank=True, null=True)
+    create_at = models.DateTimeField(auto_now=True)
 
 
 

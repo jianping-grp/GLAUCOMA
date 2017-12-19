@@ -11,10 +11,12 @@ rest_routers.register('uniprot-info', rest_views.UniprotInfoViewSet)
 rest_routers.register('kegg-protein', rest_views.KeggProteinViewSet)
 rest_routers.register('uniprot-compound', rest_views.UniprotDBCompoundViewSet)
 rest_routers.register('uniprot-pathway', rest_views.UniprotAllPathway)
+#rest_routers.register('feedback', rest_views.FeedbackCreateView)
 
 urlpatterns = rest_routers.urls
 urlpatterns += [
-    url(r'^target-prediction/', rest_views.target_pred)
+    url(r'^target-prediction/', rest_views.target_pred),
+    url(r'^feedback/', rest_views.FeedbackCreateView.as_view())
 ]
 ''' from django.conf.urls import url, include
 from .views import *
